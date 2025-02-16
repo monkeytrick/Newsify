@@ -27,6 +27,7 @@ class ArticleFactory extends Factory
             'title' => 'Big Titties',
             'views' => 10,
             'search_type' => 'default'
+            
         ];
     }
 }

@@ -14,6 +14,10 @@ return [
     |
     */
 
+    'NewsAPI' => [
+        'key' => env('NEWS_API')
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
