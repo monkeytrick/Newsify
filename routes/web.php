@@ -15,18 +15,14 @@ use App\Http\Controllers\HomeController;
 // });
 Route::controller(HomeController::class)->group(function (){
 
-    Route::get('/', [HomeController::class, 'index']);
-    Route::get('/country/{name}', [HomeController::class, 'country']);
-    Route::get('/category/{category}', [HomeController::class, 'category']);
-    Route::get('/sources/{source}', [HomeController::class, 'sources']);
-    Route::get('/query/{query}', [HomeController::class, 'query']);
+    Route::get('/', 'index');
+    Route::get('/country/{name}', 'country');
+    Route::get('/category/{category}', 'category');
+    Route::get('/sources/{source}', 'sources');
+    Route::get('/query/{query}', 'query');
 
 });
 
-
-Route::get('/', [HomeController::class, 'index']);
-
-Route::get('/query', [HomeController::class, 'query']);
 
 
 Route::middleware([

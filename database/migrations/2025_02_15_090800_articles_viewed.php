@@ -22,6 +22,10 @@ return new class extends Migration
         });
     }
 
+    // user clicks on article. Need to check if publication exists in DB. If not add call NewsAPI to find country. Add these 
+    // details to publications DB and return ID in table. Add article details to articles viewed and user history (new db need)
+
+
     /**
      * Reverse the migrations.
      */

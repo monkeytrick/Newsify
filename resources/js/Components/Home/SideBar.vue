@@ -1,8 +1,8 @@
 <script setup>
 
     const sideMenu = [{
-                            id: 'home',
-                            name: 'Home',
+                            id: 'category',
+                            name: 'Category',
                             icon: ''
                         }, 
                         {

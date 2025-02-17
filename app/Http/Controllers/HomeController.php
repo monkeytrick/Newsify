@@ -14,14 +14,8 @@ class HomeController extends Controller
 
         $data = $newsAPI->headlines();
 
-        // return $data;
-        // Log::notice("data is ". $data);
-
-        // return response()->json(['data' => $data]);
         return Inertia::render('Home', ['title' => 'Latest', 'data' => $data]);
 
-        // return Inertia::render('Home', ['event_data' => $results, 
-        // 'title' => "Results for {$results['location']}"]);
     }
 
     public function country(NewsAPIService $newsAPI, Request $request, string $country) {
