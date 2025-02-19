@@ -1,4 +1,6 @@
 <script setup>
+import axios from 'axios';
+
     const props = defineProps({
         article: Object
     })
@@ -19,7 +21,28 @@
 
     //send click details to back-end
     const handler = (article) => {
-        console.log(article.source)
+
+        const data = {
+            title: article.title,
+            publication: article.source.name,
+            url: article.url,            
+        }
+        
+        const resp = axios.post('/article-exists', 
+                                    {
+                                      title: data.title,
+                                      publication: data.publication
+
+                                    })
+                            .then(res => {
+                                if(res.data == false) {
+                                    console.log('false');
+                                }
+                            })
+        
+
+        // if response is true redirect
+        // if response is false - redirect and then make post request with data
     }
 
 
