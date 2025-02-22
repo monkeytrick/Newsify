@@ -23,6 +23,7 @@ Route::controller(HomeController::class)->group(function (){
     Route::get('/category/{category}', 'category');
     Route::get('/sources/{source}', 'sources');
     Route::get('/query/{query}', 'query');
+    Route::get('/test', 'test');
 
 });
 

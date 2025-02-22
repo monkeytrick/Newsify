@@ -43,7 +43,11 @@ class NewsAPIService {
 
     // Will need to first get the list of available resources from
     // front-end API call, as these are not available
-    public function sources($sources){
+    public function sources(){
+
+        $url = "{$this->baseURL}/top-headlines/sources?language=en&apiKey={$this->key}";
+
+        return $this->APIcall($url);
         
     }
 

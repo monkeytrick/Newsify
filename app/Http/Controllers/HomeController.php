@@ -8,7 +8,20 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
-{
+
+{   
+    public function test(NewsAPIService $newsAPI) {
+
+        $sources = $newsAPI->sources();
+
+        foreach($sources['sources'] as $source) {
+
+            print_r("Publisher is " . $source['name']);
+
+
+        }
+    }
+
     //
     public function index(NewsAPIService $newsAPI) {
 

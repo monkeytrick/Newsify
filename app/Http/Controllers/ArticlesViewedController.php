@@ -23,7 +23,11 @@ class ArticlesViewedController extends Controller
 
         if($article) {
             $article->increment('count');
-            return true;
+            return "true";
+        }
+
+        else {
+            $article::create()
         }
 
         
