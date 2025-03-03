@@ -55,8 +55,8 @@ class NewsAPIService {
 
         // Need to URL encode - https://newsapi.org/docs/endpoints/everything
 
-        // https://newsapi.org/v2/everything?q=cars&apiKey=d0246a4f43ca4d6cbaf0bd8f8f020583
-        $url = "{$this->baseURL}/everything?q={$query}&language=en&sortBy=popularity&apiKey={$this->key}";
+        // https://newsapi.org/v2/everything end point can also be used
+        $url = "{$this->baseURL}/top-headlines?q={$query}&language=en&sortBy=popularity&apiKey={$this->key}";
 
         return $this->APIcall($url);
         

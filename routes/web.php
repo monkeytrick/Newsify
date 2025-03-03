@@ -4,22 +4,23 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ArticlesViewed;
+use App\Http\Controllers\ArticlesViewedController;
+use Illuminate\Support\Facades\Log;
 
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
+Route::get('/trial', function () {
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
 
 
 Route::controller(HomeController::class)->group(function (){
 
     Route::get('/', 'index');
-    Route::get('/country/{name}', 'country');
+    Route::get('/country/{name}/{code}', 'country');
     Route::get('/category/{category}', 'category');
     Route::get('/sources/{source}', 'sources');
     Route::get('/query/{query}', 'query');
@@ -28,14 +29,7 @@ Route::controller(HomeController::class)->group(function (){
 });
 
 // Add article to DB after being viewed.
-Route::controller(ArticlesViewed::class)->group(function(){
-
-    Route::post('/article-exists', 'exists');
-
-
-});
-
-
+Route::post('article-viewed', [ArticlesViewedController::class, 'store']);
 
 
 Route::middleware([

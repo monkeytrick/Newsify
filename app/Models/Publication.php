@@ -9,6 +9,12 @@ class publication extends Model
 {
     use HasFactory;
     //
+
+    protected $fillable = [
+        'name',
+        'country'
+    ];
+
     public $timestamps = false; 
 }
 

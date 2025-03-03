@@ -1,19 +1,40 @@
 <script setup>
 
-    const sideMenu = [{
-                            id: 'category',
-                            name: 'Category',
-                            icon: ''
-                        }, 
-                        {
-                            id: 'search',
-                            name: 'Search',
-                            icon: ''
+import { Link } from '@inertiajs/vue3';
+
+const props = defineProps({
+    getData: Function
+})
+
+import CountrySearch from '../General/CountrySearch.vue';
+
+    const categories = [{
+                            id: 'business',
+                            name: 'Business',
                         },
                         {
-                            id: 'library',
-                            name: 'Library',
-                            icon: ''
+                            id: 'entertainment',
+                            name: 'Entertainment'
+                        },
+                        {
+                            id: 'general',
+                            name: 'General',
+                        },
+                        {
+                            id: 'health',
+                            name: 'Health'
+                        },
+                        {
+                            id: 'science',
+                            name: 'Science'
+                        },
+                        {
+                            id: 'sport',
+                            name: 'Sport'
+                        },
+                        {
+                            id: 'technology',
+                            name: 'Technology'
                         }]
 
 </script>
@@ -23,12 +44,22 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-gray-900 p-4 flex flex-col space-y-6">
             <h1 class="text-2xl font-bold text-green-400">Newsify</h1>
-            <ul class="space-y-4">
-                <li v-for="item in sideMenu" href="item" class="hover:text-green-400">{{ item.name }}</li>
-                <!-- <li><a href="#" class="hover:text-green-400">Home</a></li>
-                <li><a href="#" class="hover:text-green-400">Search</a></li>
-                <li><a href="#" class="hover:text-green-400">Your Library</a></li>
-                <li><a href="#" class="hover:text-green-400">Premium</a></li> -->
+            <ul class="group cursor-pointer relative w-40 p-2 space-y-4">
+                <li class="hover:text-green-400">Category</li>
+                <ul absolute left-0 mt-2 w-40 bg-gray-700 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-200>
+                    <li v-for="category in categories" 
+                              class="hover:bg-gray-600">
+
+                              <Link :href="`/category/${category.id}`">
+                                     {{ category.name }}
+                              </Link>
+                              
+                    </li>
+
+                </ul>
+
+                <CountrySearch :getData="getData"/>
+
             </ul>
         </aside>
 

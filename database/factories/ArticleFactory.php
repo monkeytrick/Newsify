@@ -26,8 +26,7 @@ class ArticleFactory extends Factory
             'country' => 'uk',
             'title' => 'Big Titties',
             'views' => 10,
-            'search_type' => 'default'
-            
+            'search_type' => 'default'            
         ];
     }
 }

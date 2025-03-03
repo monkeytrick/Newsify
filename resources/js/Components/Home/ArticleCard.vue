@@ -1,25 +1,36 @@
 <script setup>
 import axios from 'axios';
+import { router } from '@inertiajs/vue3';
+import { onMounted, ref } from 'vue';
 
     const props = defineProps({
         article: Object
     })
-    console.log("card prop is ", props.event)
 
-    // Check if article exists in db based on title. If does increase read count by 1
-    // If does not check publisher on db. 
-                    // If not get country by calling sources endpoint and storing value as country
-                    // add publisher to publishers db - return new id
-                    // add article and publishers id
-                // if it does return id and add article to db
+    // State for loading image
+    const imgLoading = ref(true)
 
-    // Above solution allows for dynamic updating of news sources as these are added to NewsAPI, though does involve
-    // More DB queries.
+    // State for bookmarks
+    const bookmrk = ref(false)
 
-    // Alternate solution would be to have DB query check daily for new sources added and update publishers table when 
-    // required.
 
-    //send click details to back-end
+    const imgError = () => {
+        imgLoading.value = false
+        console.log('imge error')
+        event.target.src = "images/placeholder.png"
+    }
+
+    const HandleBookmark = ()=> {
+        console.log("Bookmark clicked")
+
+        bookmrk.value = !bookmrk.value
+
+        //Send request to DB - avoid duplicates by checking exists already
+        
+
+    }
+
+    // Add article to db when viewed or increment view count
     const handler = (article) => {
 
         const data = {
@@ -28,10 +39,11 @@ import axios from 'axios';
             url: article.url,            
         }
         
-        const resp = axios.post('/article-exists', 
+        const resp = axios.post('/article-viewed', 
                                     {
                                       title: data.title,
-                                      publication: data.publication
+                                      publication: data.publication,
+                                      url: data.url
 
                                     })
                             .then(res => {
@@ -39,24 +51,41 @@ import axios from 'axios';
                                     console.log('false');
                                 }
                             })
-        
-
-        // if response is true redirect
-        // if response is false - redirect and then make post request with data
+                            .catch(error => console.log(error))
     }
 
-
-    // On and off focus - trigger event that pulls up card
 </script>
 
 <template>
 
         <div @click="handler(props.article)" class="w-[30%] bg-gray-800 p-4 rounded-lg">
-            <h4 class="mt-2 font-bold text-center"> {{ props.article.title }}</h4>
-            <img v-if="props.article.urlToImage !== null" :src="props.article.urlToImage" class="w-full rounded" alt="Playlist">
-            <img v-else src="images/placeholder.png">
-            
-            <h5 class="mt-2 font-bold text-center"> {{ props.article.source.name }}</h5>
+
+            <!-- Bookmark icon -->
+            <div class="flex justify-end items-end">
+                <!-- .stop prevents bubbling to article click -->
+                <svg :class="bookmrk ? 'fill-current text-green-400' : 'fill-none'" @click.stop="HandleBookmark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mb-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                </svg>
+            </div>
+
+            <a :href="article.url">
+                <h4 class="mt-2 font-bold text-center"> {{ props.article.title.slice(0, 55)  }}...</h4>
+                
+                <!-- Load the image if url value is not null -->
+                <template v-if="props.article.urlToImage !== null">
+                    <p v-if="imgLoading">Loading image...</p>
+                    <img v-show="!imgLoading"
+                        :src="props.article.urlToImage" 
+                        @load="imgLoading = false"
+                        @error="imgError"
+                        alt="artice-image">
+                </template>
+                <div v-else>
+                    <img src="images/placeholder.png" alt="placeholder-img">
+                </div>
+               
+                <h5 class="mt-2 font-bold text-center"> {{ props.article.source.name }}</h5>
+            </a>
         </div>
 
 </template>
