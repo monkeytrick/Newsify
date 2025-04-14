@@ -12,21 +12,45 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Contracts\LoginResponse;
+
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+
+
+use Illuminate\Support\Facades\Log;
 
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    public function register(): void
+    public function register()
     {
-        //
+
+        // Override LoginResponse to custom re-direct after login
+        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
+
+            public function toResponse($request)
+            {
+            // After successful log-in, redirect user to dashboard according to role/privilege
+               $role = $request->user()->role;
+               
+               Log::info("User logged as " . $request->user() . "; request to /dashboard/$role");
+               // make call to route in web.php
+               return redirect("/dashboard/$role");
+
+            }
+        });
+
+        
+
     }
 
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot()
     {
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
@@ -42,5 +66,19 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
-    }
+
+
+        Fortify::authenticateUsing(function (Request $request) {
+
+            Log::info("Request received in boot as $request");
+            $user = User::where('email', $request->identity)
+                    ->orWhere('name', $request->identity)->first();
+     
+            if ($user &&
+                Hash::check($request->password, $user->password)) {
+                return $user;
+            }
+        });
+
+   }
 }

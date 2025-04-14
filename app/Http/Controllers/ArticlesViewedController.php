@@ -32,7 +32,10 @@ class ArticlesViewedController extends Controller
                                         ->first();
         
                 if($article) {
+
                     $article->increment('views');
+
+                    return response()->json(['success' => 'article count increased']);
                 }
         
                 else {
@@ -41,11 +44,15 @@ class ArticlesViewedController extends Controller
                                     'views' => 1,
                                     'publication_id' => $publication->id,
                                     'url'=> $validated['url']]);
+
+                    return response()->json(['success' => 'article added']);
                 }
         } 
 
         catch(Exception $e) {
             Log::error("DB query error on ArticlesViewed store(): {$e}");
+
+            return response()->json(['error' => 'article could not be added']);
         }
     }
 }

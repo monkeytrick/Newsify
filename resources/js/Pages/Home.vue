@@ -1,15 +1,27 @@
 <script setup>
 
-import { Inertia } from '@inertiajs/inertia';
-import { onMounted, ref } from 'vue';
-import SideBar from '@/Components/Home/SideBar.vue';
-import Header from '@/Components/Home/Header.vue';
-import ArticleCard from '@/Components/Home/ArticleCard.vue';
+import { ref } from 'vue';
+import SideBar from '@/Components/SideBar.vue';
+import Header from '@/Components/Header.vue';
+import ArticleCard from '@/Components/ArticleCard.vue';
 import { router } from '@inertiajs/vue3';
+import ConfirmationModal from '@/Components/ConfirmationModal.vue';
 
 const state = ref({
     loading: false
 })
+
+const Modal = ref(false)
+
+const changeModal = ()=> {
+    Modal.value = !Modal
+    console.log("reached like anything")
+}
+
+const showModal = () => {
+    Modal.value = true
+    console.log("Modal")
+};
 
 const props = defineProps({
     title: String,
@@ -26,21 +38,22 @@ const getData = (country)=> {
 
 }
 
-onMounted(() => {
-    console.log("results are ", props.data.totalResults)
-})
-
 </script>
 
 <template>
 
 <body class="bg-black text-white font-sans">
+
+    <ConfirmationModal :show="Modal" @changeModal="changeModal"/>
+    
     <div class="flex h-screen">
 
             <SideBar :getData="getData"/>
         
             <!-- main content area -->
             <main class="flex-1 p-6 overflow-auto">
+
+                <button @click="showModal">Modal</button>
 
                 <!-- Page header -->
                 <Header/>
@@ -50,8 +63,9 @@ onMounted(() => {
 
                     <h1 class="text-3xl font-bold my-10">{{ props.title }}</h1>
                         
-                       <div class="w-full flex flex-wrap gap-6">
+                        <div class="w-full flex flex-wrap gap-6">
 
+                            <!-- Article cards -->
                             <template v-if="props.data.totalResults !== 0">
                                 <ArticleCard v-for="article in props.data.articles" 
                                 :article="article"/>

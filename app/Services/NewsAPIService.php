@@ -53,8 +53,6 @@ class NewsAPIService {
 
     public function query(string $query){
 
-        // Need to URL encode - https://newsapi.org/docs/endpoints/everything
-
         // https://newsapi.org/v2/everything end point can also be used
         $url = "{$this->baseURL}/top-headlines?q={$query}&language=en&sortBy=popularity&apiKey={$this->key}";
 

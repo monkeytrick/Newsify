@@ -37,6 +37,10 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             //
+
+            // Show whether user is logged in
+            'auth.user' => $request->user() ? $request->user()->only('name') : null,
+           
         ]);
     }
 }
