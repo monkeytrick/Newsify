@@ -1,31 +1,28 @@
 <script setup>
 import { ref } from 'vue';
+import { router } from '@inertiajs/vue3';
 import countryList from './country-list';
 
-const props = defineProps({
-    getData: Function
-})
+defineEmits(['countryArticles'])
 
 // Display selected country in input field
-const showSelected = ref("");
+const country = ref("");
 const placeHolder = ref("country")
 
-const fetchCountry = (country)=> {
+const fetchCountry = ()=> {
 
-    // Check exists - no error. Return country code
-    const countryCode = countryList.find(country => country.name === showSelected.value).code
+    // Check exists in list array - no error. Return country code
+    const countryCode = countryList.find(cnt => cnt.name === country.value).code
 
     if(countryCode == undefined) {
         placeHolder.value = "Error with country"
         return;
     }
 
-    console.log("Country code is ", countryCode)
-
+    //Request data
     // Country name is not returned by API data. Need to pass
     // this to display with results.
-    props.getData({name: showSelected.value,
-                   code: countryCode})
+    router.get(`/country/${country.value}/${countryCode}`)
 }
 
 </script>
@@ -46,8 +43,8 @@ input {
     <label for="country"></label>
 
     <input list="countries" id="country" name="country" :placeholder=placeHolder 
-                v-model="showSelected"  
-                @change="fetchCountry(showSelected.value)">
+                v-model="country"  
+                @change="fetchCountry">
 
     <datalist id="countries">
         <option v-for="country in countryList" :key="country.code" :value="country.name"/>

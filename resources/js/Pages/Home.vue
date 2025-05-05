@@ -15,12 +15,10 @@ const Modal = ref(false)
 
 const changeModal = ()=> {
     Modal.value = !Modal
-    console.log("reached like anything")
 }
 
 const showModal = () => {
     Modal.value = true
-    console.log("Modal")
 };
 
 const props = defineProps({
@@ -28,15 +26,6 @@ const props = defineProps({
     data: Object,
 })
 
-const getData = (country)=> {
-
-    state.value.loading = true;
-
-    router.get(`/country/${country.name}/${country.code}`, {}, {
-        preserveState: true, // Keeps page state intact
-    }).then(res => state.value.loading = false);
-
-}
 
 </script>
 
@@ -48,7 +37,7 @@ const getData = (country)=> {
     
     <div class="flex h-screen">
 
-            <SideBar :getData="getData"/>
+            <SideBar />
         
             <!-- main content area -->
             <main class="flex-1 p-6 overflow-auto">

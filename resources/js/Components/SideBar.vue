@@ -1,12 +1,17 @@
 <script setup>
 
 import { Link, usePage } from '@inertiajs/vue3';
-
 import CountrySearch from './General/CountrySearch.vue';
 
 const props = defineProps({
     getData: Function
 })
+
+const emit = defineEmits(['updateArticles'])
+
+const countryArticles = (articles) => {
+    emit['updateArticles', articles]
+}
 
 // Access user logged in dets from global variables (not props)
 const page = usePage();
@@ -68,7 +73,7 @@ const page = usePage();
 
                 </ul>
 
-                <CountrySearch :getData="getData"/>
+                <CountrySearch @countryArticles="countryArticles" :getData="getData"/>
 
             </ul>
         </aside>

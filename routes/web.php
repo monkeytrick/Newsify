@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -9,16 +10,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Gate;
 
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
-
-
+// General routes
 Route::controller(HomeController::class)->group(function (){
 
     Route::get('/', 'index');
@@ -30,27 +22,30 @@ Route::controller(HomeController::class)->group(function (){
 
 });
 
-// When using properly - Add below to middleware or gate
-Route::get('/dashboard/user', [UserController::class, 'index']);
-Route::get('/user/bookmarks', [UserController::class, 'bookmarks']);
-Route::post('/user/bookmark', [UserController::class, 'addBookmark']);
-Route::delete('/user/bookmark/delete/{articleId}/{bookmarkId}', [UserController::class, 'deleteBookmark']);
+// Logged in user routes
+Route::middleware(['user'])->controller(UserController::class)->group(function () {
+
+    Route::get('/dashboard/user', 'index');
+    Route::get('/user/bookmarks', 'bookmarks');
+    Route::post('/user/bookmark', 'addBookmark');
+    Route::delete('/user/bookmark/delete/{articleId}/{bookmarkId}', 'deleteBookmark');
+
+});
+
+// Admin
+Route::middleware(['admin'])->controller(AdminController::class)->group(function () {
+    
+    // Admin dashboard homepage
+    Route::get('/dashboard/admin', 'index');
+    
+    // Data APIS for charts
+    Route::get('/admin/data/articles', 'articles');
+    Route::get('/admin/data/bookmarks', 'bookmarks');
+
+});
 
 // Add article to DB after being viewed.
 Route::post('article-viewed', [ArticlesViewedController::class, 'store']);
-
-
-
-// Re-write to use gate as middleware and group controllers
-Route::get('/dashboard/admin', function(){
-    
-    if(Gate::denies('is-admin')) {
-        return abort(403, 'You are not authorized to access this page.');
-    }
-
-    return Inertia::render('AdminTrial');
-
-})->name('admin.dashboard');
 
 
 // Route::middleware([

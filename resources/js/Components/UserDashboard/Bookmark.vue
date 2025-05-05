@@ -12,12 +12,9 @@ const props = defineProps({article:Object})
 const bookmrk = ref(null)
 
 const postRequest = (url, data)=> {
-    console.log("sending bookmark request with ", data)
     return axios.post(url, data)
             .then(res => {
-                console.log("res is ", res)
                 if(res.data) {
-                    console.log("post request returned as ", res.data)
                     return res.data
                 } else {
                     throw new Error("Bookmark error")
@@ -25,6 +22,7 @@ const postRequest = (url, data)=> {
             })
             .catch(error => console.log(error))
 }
+
 // Delete bookmark
 const deleteRequest = (url) => {
     console.log(`sending delete request to ${url}`)

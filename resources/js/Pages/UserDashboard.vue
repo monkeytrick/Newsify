@@ -1,6 +1,6 @@
 <script setup>
 
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import SideBar from '@/Components/SideBar.vue';
 import Header from '@/Components/Header.vue';
 import ArticleCard from '@/Components/ArticleCard.vue';
@@ -15,7 +15,7 @@ const props = defineProps({
 
 // Set props to reactive so that they can be 
 // filtered after one is deleted
-const articles = reactive(
+const articles = ref(
     props.data.articles
 )
 
@@ -41,11 +41,9 @@ const confirmDelete = (ids)=> {
     // Set article ID for filter and URL
     id.value = ids
 
-    console.log("ids are ", ids)
-
     // set URL to call
     URL.value = `/user/bookmark/delete/${id.value.articleId}/${id.value.bookmarkId}`
-    console.log(URL.value)
+
     // Trigger modal and set text 
     modalTxt.value = "Delete bookmark?"
     modal.value = true
@@ -72,7 +70,6 @@ const handleRequest = () => {
              modal.value = false
         })
         .catch(error => {
-            console.log(error)
             modalTxt.value = `Error: ${error.message}`
         }
         )
@@ -92,7 +89,7 @@ const handleRequest = () => {
 
         <div class="flex h-screen">
     
-                <SideBar/>
+                <SideBar />
             
                 <!-- main content area -->
                 <main class="flex-1 p-6 overflow-auto">

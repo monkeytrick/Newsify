@@ -10,20 +10,6 @@ use Illuminate\Support\Facades\Log;
 class HomeController extends Controller
 
 {   
-    // public function test(NewsAPIService $newsAPI) {
-
-    //     $sources = $newsAPI->sources();
-
-    //     foreach($sources['sources'] as $source) {
-
-    //         print_r("Publisher is " . $source['name']);
-
-
-    //     }
-    // }
-
-    //
-
     // Home page
     public function index(NewsAPIService $newsAPI) {
 
@@ -34,15 +20,11 @@ class HomeController extends Controller
     }
 
     // News by country 
-    public function country(Request $request, NewsAPIService $newsAPI, $country, $code) {
-
-        Log::info('Request Headers for router.get:', $request->headers->all());
+    public function country(NewsAPIService $newsAPI, $name, $code) {
 
         $data = $newsAPI->country($code);
 
-        // $country = $request->input('name');
-
-        return Inertia::render('Home', ['title' => "News for {$country}", 'data' => $data]);
+        return Inertia::render('Home', ['title' => "News for {$name}", 'data' => $data]);
     }
 
     public function category(NewsAPIService $newsAPI, Request $request, string $category) {

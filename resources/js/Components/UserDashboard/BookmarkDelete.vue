@@ -13,9 +13,7 @@ const props = defineProps({
 })
 
 const deleteBookmark = () => {
-    // console.log('clicked', { articleId: props.articleId, 
-    //                          bookmarkId: props.bookmarkId })
-
+ 
     emit('confirmDelete', { articleId: props.articleId, 
                             bookmarkId: props.bookmarkId })
 

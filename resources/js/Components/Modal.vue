@@ -37,8 +37,6 @@ watch(() => props.show, () => {
 const close = () => {
     if (props.closeable) {
         emit('close');
-        console.log("Close requested Modal")
-
     }
 };
 
@@ -58,8 +56,6 @@ onUnmounted(() => {
     document.removeEventListener('keydown', closeOnEscape);
     document.body.style.overflow = null;
 });
-
-console.log("Modal show prop:", props.show);
 
 const maxWidthClass = computed(() => {
     return {

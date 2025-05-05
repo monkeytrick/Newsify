@@ -14,7 +14,6 @@ const changeModal = () => {
 
 const close = () => {
     emit('close');
-    // console.log("Close requested")
 };
 
 </script>

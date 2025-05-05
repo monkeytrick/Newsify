@@ -146,12 +146,5 @@ class UserController extends Controller
             Log::error("Error deleting user bookmark: $e");
             return response()->json(["error" => "Error: Bookmark could not be deleted"]);
         } 
-
-        // Delete user bookmark
-            // find article in table with url
-            // decrease counter
-            // get article ID
-            // Delete from user bookmarks tables
-
     }
 }

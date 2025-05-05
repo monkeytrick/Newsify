@@ -40,11 +40,13 @@ const imgError = (event) => {
     imgLoading.value = false
 }
 
+const errorMsg = reactive( { display: false, msg: "" } )
+
 // Add article to db when viewed, or increment view count
 // and open article in new window
 const articleHandler = () => {
 
-    // Send request to increment view count
+    // Send request to increment view count - not visible to user
     axios.post('/article-viewed',  {
                 title: props.article.title,
                 publication: props.article.source.name,
@@ -59,9 +61,7 @@ const articleHandler = () => {
                     if(!resp.data.success) {
                         throw Error("Could not add data")
                     }
-
-                    console.log("Data added: ", resp.data.success)
-                })
+               })
                 .catch(e => console.log(e))
 
     window.open(props.article.url, '_blank', 'noopener,noreferrer')
@@ -73,7 +73,8 @@ const articleHandler = () => {
 <template>
 
         <div @click="articleHandler()" class="w-[30%] bg-gray-800 p-4 rounded-lg">
-
+            <!-- Display error -->
+             <template v-if="errorMsg.display">{{ errorMsg.msg }}</template>
             <!-- Display delete bookmark icon if article bookmarked (only shows with logged in user)-->
             <template v-if="props.article.bookmarkId">
                 <BookmarkDelete :bookmarkId="props.article.bookmarkId"

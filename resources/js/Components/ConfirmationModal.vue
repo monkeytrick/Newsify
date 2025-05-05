@@ -27,7 +27,6 @@ defineProps({
 
 const changeModal = () => {
     emit('changeModal')
-    console.log("change modal called")
 }
 
 const handleRequest = () => {

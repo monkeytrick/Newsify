@@ -67,10 +67,10 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
-
+        // Allows user to login with username or email instead of 
+        // default email only
         Fortify::authenticateUsing(function (Request $request) {
 
-            Log::info("Request received in boot as $request");
             $user = User::where('email', $request->identity)
                     ->orWhere('name', $request->identity)->first();
      
